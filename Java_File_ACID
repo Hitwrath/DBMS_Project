@@ -1,0 +1,62 @@
+package grp7;
+import java.sql.*;
+
+
+public class src{
+
+	
+public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+
+					String url="jdbc:postgresql://localhost:5432/7_project";
+
+					String userName="postgres";
+
+
+					String pass="root";
+					
+
+					Connection con=DriverManager.getConnection(url,userName,pass);
+					
+					con.setAutoCommit(false);   //atomicity
+					
+					con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);   //isolation
+					
+					Statement st=con.createStatement();
+					
+					PreparedStatement myStmt2;
+
+					myStmt2 = con.prepareStatement("delete from product where prod_id=?");
+                    myStmt2.setString(1,"p1");
+     
+					try {
+
+					myStmt2.execute();
+
+				
+					con.commit();
+
+					st.close();
+
+					con.close();
+					
+					}
+					catch(Exception e) {
+
+					System.out.println("error"+e.getMessage());
+
+					con.rollback();
+					}
+					
+					
+					finally {
+						st.close();
+						con.close();	
+					}	
+				
+				
+				}
+			
+
+
+		}
